@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <title></title>
+    {% load staticfiles %}
+  <link href="{% static "poker/css/style.css"%}" rel="stylesheet">
+    <style>
+
+    div{
+
+      display:inline-block;
+      vertical-align: top;
+    }
+    form{
+      margin-left:50px;
+      vertical-align: top;
+      text-align: right;
+    }
+    h3{
+      margin-bottom: 50px;
+    }
+
+    legend{
+      color: white;
+      text-align: left;
+    }
+
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <img src="{% static 'poker/img/logo.png' %}" alt="logo">
+    </div>
+    <div>
+      <form  action="{% url 'my_create'%}" method="post">
+        {% csrf_token %}
+        <fieldset>
+          <legend>Register:</legend>
+        <p>Name : <input type="text" name="name"></p>
+        <p>Username : <input type="text" name="username"></p>
+        <p>Password : <input type="password" name="password"></p>
+        <p>Confirm Password : <input type="password" name="conpassword"></p>
+        <p>Profile Picture: <select name="picture">
+          <option value="1">Batman</option>
+          <option value="2">Superman</option>
+          <option value="3">Spiderman</option>
+          <option value="4">Wolverine</option>
+          <option value="5">Captain America</option>
+          <option value="6">Catwoman</option>
+        </select></p>
+        <input type="submit" value="Register">
+        </fieldset>
+      </form>
+    </div>
+    <div>
+      <fieldset>
+        <legend>Login:</legend>
+      <form  action="{% url 'my_main'%}" method="post">
+        {% csrf_token %}
+        <p>Username : <input type="text" name="username"></p>
+        <p>Password : <input type="password" name="password"></p>
+        <p><input type="submit" value="Login"></p>
+        </fieldset>
+      </form>
+    </div>
+  </body>
+</html>

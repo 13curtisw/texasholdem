@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    {% load staticfiles %}
+    <link href="{% static 'poker/css/style.css'%}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        socket = new WebSocket("ws://" + window.location.host + "/table/");
+        socket.onopen = function(){
+          socket.send("{{user.username}}");
+        }
+        // socket2 = new WebSocket("ws://" + window.location.host + "/chat/");
+        socket.onmessage = function(e){
+            console.log(e)
+            if(e.data == "active"){
+              $("#actions").css("border-color", "blue")
+            }
+            else if(e.data =="inactive"){
+              $("#actions").css("border-color", "white")
+            } else if(e.data.substring(0,4) == "turn"){
+              index = e.data.substring(4,5)
+              console.log(index)
+              s = e.data.substring(5)
+              $(".player").css("border", "none")
+              $("#" + index).css("border", "3px solid lightblue")
+              $("#title").text("It is now " + s + "'s turn")
+            } else if(e.data.substring(0,4) =="hand"){
+              c1 = e.data.substring(4,6)
+              c2 = e.data.substring(6)
+              $("#card1").html("<img src='../../static/poker/img/" + c1 + ".png' ><img src='../../static/poker/img/" +
+               c2 + ".png' >")
+            } else if(e.data.substring(0,4) == "flop"){
+              c1 = e.data.substring(4,6)
+              c2 = e.data.substring(6,8)
+              c3 = e.data.substring(8)
+              $("#table_cards").html("<img src='../../static/poker/img/" + c1 + ".png' ><img src='../../static/poker/img/" +
+               c2 + ".png' ><img src='../../static/poker/img/" + c3 + ".png' >")
+              $(".playermove").html("")
+            } else if(e.data.substring(0,4) == "four"){
+              c1 = e.data.substring(4,6)
+              c2 = e.data.substring(6,8)
+              c3 = e.data.substring(8,10)
+              c4 = e.data.substring(10)
+              $("#table_cards").html("<img src='../../static/poker/img/" + c1 + ".png' ><img src='../../static/poker/img/" +
+               c2 + ".png' ><img src='../../static/poker/img/" + c3 + ".png' ><img src='../../static/poker/img/" + 
+               c4 + ".png' >")
+              $(".playermove").html("")
+            } else if(e.data.substring(0,4) == "rivr"){
+              c1 = e.data.substring(4,6)
+              c2 = e.data.substring(6,8)
+              c3 = e.data.substring(8,10)
+              c4 = e.data.substring(10,12)
+              c5 = e.data.substring(12)
+              $(".playermove").html("")
+              $("#table_cards").html("<img src='../../static/poker/img/" + c1 + ".png' ><img src='../../static/poker/img/" +
+               c2 + ".png' ><img src='../../static/poker/img/" + c3 + ".png' ><img src='../../static/poker/img/" + 
+               c4 + ".png' ><img src='../../static/poker/img/" + c5 + ".png' >")
+            } else if(e.data.substring(0,4) == "wins"){
+              c1 = e.data.substring(4,6)
+              c2 = e.data.substring(6,8)
+              index = e.data.substring(8,9)
+              message = e.data.substring(9)
+              $("#" + index).html("<img class='winhand' src='../../static/poker/img/" + c1 
+                + ".png' ><img class='winhand' src='../../static/poker/img/" +
+               c2 + ".png' >")
+              $("#title").text(message)
+            } else if(e.data.substring(0,4) == "prof"){
+              index = e.data.substring(4,5)
+              path = e.data.substring(5)
+              $("#" + index).html("<img class='profile' src='" + path + "' >")
+            } else if(e.data.substring(0,5) == "reset"){
+              $("#table_cards").html("")
+              $("#amount").html("")
+              $("#highbet").html("")
+              $(".playermove").html("")
+              if(e.data.substring(5) == "all"){
+                $(".player").html("")
+              }
+            } else if(e.data.substring(0,4) == "move"){
+              index = e.data.substring(4,5)
+              s = e.data.substring(5)
+              $("#" + index + "move").html("<p>" + s + "</p>")
+            } else if(e.data.substring(0,4) == "pot$"){
+              amount = e.data.substring(3)
+              $("#amount").html("<p>Pot: " + amount + "</p>") 
+            } else if(e.data.substring(0,4) == "bet$"){
+              bet = e.data.substring(3)
+              $("#highbet").html("<p>Bet to Match: " + bet + "</p>")
+            } else if(e.data.substring(0,4) == "cash"){
+              cash = e.data.substring(4)
+              $("#balance").html("<h3>Your Chips: $" + cash + "</h3>")
+            } else if(e.data.substring(0,4) == "tie!"){
+              number = parseInt(e.data.substring(4,5))
+              temp = e.data.substring(5)
+              for (var i = 0; i < number; i++) {
+                c1 = temp.substring(0,2)
+                c2 = temp.substring(2,4)
+                index = temp.substring(4,5)
+                $("#" + index).html("<img class='winhand' src='../../static/poker/img/" + c1 
+                + ".png' ><img class='winhand' src='../../static/poker/img/" +
+                c2 + ".png' >")
+                temp = temp.substring(5)
+              }
+              $("#title").text("We have a tie!")
+            }
+        }
+        console.log(socket)
+        $("#fold").click(function(){
+          socket.send("fold");
+        });
+        $("#check").click(function(){
+          socket.send("check");
+        });
+        $("#call").click(function(){
+          socket.send("call");
+        });
+        $("#raise").click(function(){
+          if(parseInt($("#raiseamount").val()))
+            socket.send($("#raiseamount").val());
+        });
+
+      });
+          // etc
+
+  </script>
+
+    <title></title>
+  </head>
+
+  <body>
+      <h1 id="title"></h1>
+      <div class="table">
+        <div id = "1" class="player"></div>
+        <div id = "2" class="player"></div>
+        <div id = "3" class="player"></div>
+        <div id="1move" class="playermove"></div>
+        <div id="2move" class="playermove"></div>
+        <div id="3move" class="playermove"></div>
+        <div id="pot">
+          <div id="amount"></div>
+          <div id="highbet"></div>
+        </div>
+        <div id="table_cards"></div>
+        <div id="4move" class="playermove"></div>
+        <div id="5move" class="playermove"></div>
+        <div id="6move" class="playermove"></div>
+        <div id = "4" class="player"></div>
+        <div id = "5" class="player"></div>
+        <div id = "6" class="player"></div>
+      </div>
+      <div id="interface">
+        <div id="hand" class = "inter">
+          <div id="card1"></div>
+          <div id="card2"></div>
+        </div>
+        <div id="actions" class = "inter">
+          <button id="fold">Fold</button>
+          <button id="check">Check</button>
+          <button id="call">Call</button>
+          <input type="text" id="raiseamount">
+          <button id="raise">Raise</button>
+        </div>
+        <div id="balance" class = "inter">
+        </div>
+      </div>
+              <h3>{{user.username}}</h3>
+      <a href="{% url 'my_leave' %}">leave game</a>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>edit</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    {% load staticfiles %}
+  	<link href="{% static 'poker/css/style.css'%}" rel="stylesheet">
+</head>
+<body>
+	<h3>Edit Profile</h3>
+	<form action="{% url 'my_update' %}" method="post">
+	{% csrf_token %}
+		<p>New Name : <input type="text" name="name" value = "{{user.name}}"></p>
+		<p>User Name : <input type="text" name="username" value = "{{user.username}}"></p>
+		<p>Profile Picture: <select name="picture">
+			<option value="1">Batman</option>
+			<option value="2">Superman</option>
+			<option value="3">Spiderman</option>
+			<option value="4">Wolverine</option>
+			<option value="5">Captain America</option>
+			<option value="6">Catwoman</option>
+		</select></p>
+		<p><input type="submit" value="Submit"></p>
+	</form>
+</body>
+</html>

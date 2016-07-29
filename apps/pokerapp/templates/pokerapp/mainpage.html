@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    {% load staticfiles %}
+  <link href="{% static 'poker/css/style.css'%}" rel="stylesheet">
+  </head>
+  <body>
+    <div id = "wrapper">
+      <div class="navbar">
+        <img src="{% static 'poker/img/logo.png' %}" alt="logo">
+        <a class="logout" href="{% url 'my_logout' %}">Log out</a>
+        <img src="{% static 'poker/img/hooker.png' %}" alt="logo" height=90px>
+      </div>
+        <div class="whiteline">
+
+      </div>
+      <div id = "user_status">
+        <h3>Welcome {{users.username}}</h3>
+        <div class ="user_img"><img src="../../static/{{users.picture}}" alt="profile picture"></div>
+        <h4>You have ${{users.balance}}</h4>
+        <a href="/user/profile/{{users.id}}">view profile</a>
+              <div class="leaderboard">
+       <a href="/leaderboard"><h4>Leaderboard</h4></a>
+     </div>
+      <div class="slot">
+            <h4>Try our new GAMES</h4>
+            <img src="{% static 'poker/img/slot.png' %}" alt="logo" height=50px>
+            <img src="{% static 'poker/img/slot2.png' %}" alt="logo" height=50px>
+      </div>
+      </div>
+      <div id="view_tables">
+        <h3>Start Playing Now!</h3>
+          <div class="tables">
+                <a href ="/tables">Press to join table</a>
+          </div>
+      </div>
+      <div id="ads">
+        <h4>Advertisements</h4>
+        <img src="{% static 'poker/img/facebook.jpg' %}" alt="logo" height=390px>
+        <img src="{% static 'poker/img/ads2.jpg' %}" alt="logo" height=140px>
+
+      </div>
+      <div id="contributors">
+        <h3>Contributors</h3>
+        <a href="https://github.com/13curtisw"><h5>Github: Curtis</h5></a>
+        <a href="https://github.com/myang0202"><h5>Github: Matt</h5></a>
+        <a href="https://github.com/Cryfoo"><h5>Github: Jae</h5></a>
+      </div>
+
+<!--         <form action="{% url 'my_newtable' %}" method="post">
+          {% csrf_token %}
+          <input type="submit" value="make new table">
+        </form> -->
+
+    </div>
+
+  </body>
+</html>

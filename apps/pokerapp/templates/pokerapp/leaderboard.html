@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+      {% load staticfiles %}
+    <link href="{% static 'poker/css/style.css'%}" rel="stylesheet">
+    <style media="screen">
+      td{
+          text-align: center;
+          font-size: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <p><a href="{% url 'my_main' %}">HOME</a></p>
+    <div id=leaderboard>
+    <h2>LEADERBOARD</h2>
+    <table>
+      <tr>
+        <th>RANK</th>
+        <th>NAME</th>
+        <th>EARNINGS</th>
+      </tr>
+
+      {% for user in users%}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{user.name}}</td>
+        <td>${{user.balance}}</td>
+      </tf>
+    {% endfor %}
+  </table>
+  </div>
+  </body>
+</html>

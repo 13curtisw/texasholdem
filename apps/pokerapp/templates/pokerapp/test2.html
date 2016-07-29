@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Table</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			socket = new WebSocket("ws://" + window.location.host + "/table/");
+			// socket2 = new WebSocket("ws://" + window.location.host + "/chat/");
+			console.log(socket)
+			$("#fold").click(function(){
+				socket.send("fold");
+			});
+			$("#check").click(function(){
+				socket.send("check");
+			});
+			$("#call").click(function(){
+				socket.send("call");
+			});
+			$("#raise").click(function(){
+				if(parseInt($("#raiseamount").val()))
+					socket.send($("#raiseamount").val());
+			});
+
+    	});
+        // etc
+
+	</script>
+</head>
+<body>
+	<h1>hello</h1>
+	<button id="fold">Fold</button>
+	<button id="check">Check</button>
+	<button id="call">Call</button>
+	<input type="text" id="raiseamount">
+	<button id="raise">Raise</button>
+</body>
+</html>

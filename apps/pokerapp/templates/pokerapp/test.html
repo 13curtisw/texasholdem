@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Poker App</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			socket = new WebSocket("ws://" + window.location.host + "/room2/");
+			// socket2 = new WebSocket("ws://" + window.location.host + "/chat/");
+			players = []
+			console.log(socket)
+			socket.onmessage = function(e) {
+				console.log(e)
+				players.push("New Player")
+				$("body").append(e.data);
+			}
+			socket.onopen = function() {
+    			socket.send("new player");
+			}
+			$(document).on('click','#launch', function(e){
+				socket.send("this is a click");
+			})
+			// socket2.onopen= function(){
+			// 	socket2.send("old player");
+			// }
+    	});
+        // etc
+
+	</script>
+</head>
+<body>
+	<button id = "launch">Blahhh</button>
+
+</body>
+</html>
